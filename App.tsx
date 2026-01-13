@@ -302,7 +302,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-full flex flex-col lg:flex-row overflow-hidden p-4 lg:p-6 gap-4 lg:gap-8 relative bg-gradient-to-br from-blue-900/40 to-black/20">
+    <div className="min-h-screen lg:h-screen w-full flex flex-col lg:flex-row overflow-x-hidden lg:overflow-hidden p-4 lg:p-6 gap-4 lg:gap-8 relative bg-gradient-to-br from-blue-900/40 to-black/20">
       {showCelebration && <EnhancedCelebration customImage={wheelConfig.customFallingImage} />}
 
       {/* Language Switcher */}
@@ -314,8 +314,8 @@ const App: React.FC = () => {
         {lang === 'zh' ? 'English' : '中文'}
       </button>
 
-      {/* Side Panel */}
-      <div className="w-full lg:w-[420px] maple-window flex flex-col shrink-0 overflow-hidden shadow-2xl h-[50vh] lg:h-full">
+      {/* Side Panel (Mobile Order: 2, Desktop Order: 1) */}
+      <div className="order-2 lg:order-1 w-full lg:w-[420px] maple-window flex flex-col shrink-0 overflow-hidden shadow-2xl h-[600px] lg:h-full">
         <div className="maple-header px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sword className="w-4 h-4" />
@@ -374,8 +374,8 @@ const App: React.FC = () => {
                           </button>
                           <button onClick={() => setPrizes(prizes.filter(p => p.id !== prize.id))} className="text-red-400/70 hover:text-red-400"><Trash2 className="w-4 h-4" /></button>
                         </div>
-                        {/* Grid layout for emojis */}
-                        <div className="grid grid-cols-7 gap-1">
+                        {/* Grid layout for emojis - Mobile 5 cols (3 rows), Desktop 7 cols (2 rows) */}
+                        <div className="grid grid-cols-5 lg:grid-cols-7 gap-1">
                           {COMMON_EMOJIS.map(emoji => (
                             <button key={emoji} onClick={() => setPrizes(prizes.map(p => p.id === prize.id ? {...p, icon: emoji, image: undefined} : p))} className={`text-sm aspect-square rounded hover:bg-white/20 flex items-center justify-center ${prize.icon === emoji ? 'bg-yellow-400/30 ring-1 ring-yellow-400/50' : ''}`}>{emoji}</button>
                           ))}
@@ -418,7 +418,8 @@ const App: React.FC = () => {
                  <div className="flex gap-3 mt-3">
                    <button onClick={handleSingleAdd} className="flex-1 bg-white/10 text-white py-3 rounded-lg font-black text-xs hover:bg-white/20 active:scale-95 transition-transform shadow uppercase flex items-center justify-center gap-2"><UserPlus className="w-4 h-4" /> {t.singleAdd}</button>
                    <button onClick={() => {
-                     const names = participantInput.split('\n').map(n => n.trim()).filter(n => n);
+                     // Updated Logic: Split by newline OR comma
+                     const names = participantInput.split(/[\n,]/).map(n => n.trim()).filter(n => n);
                      setParticipants([...participants, ...names.map(name => ({ id: Math.random().toString(36).substr(2,9), name, entries: 1 }))]);
                      setParticipantInput('');
                    }} className="flex-1 bg-[#FFD54F] text-[#5D4037] py-3 rounded-lg font-black text-xs hover:bg-yellow-400 active:scale-95 transition-transform shadow-lg uppercase">{t.addFriends}</button>
@@ -509,37 +510,37 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Wheel Area */}
-      <div className="flex-1 flex flex-col items-center justify-center relative py-4 lg:py-0">
-        <div className="text-center mb-4 lg:mb-8 z-10">
-          <h1 className="text-4xl lg:text-6xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] tracking-tighter mb-2">{wheelConfig.title}</h1>
+      {/* Main Wheel Area (Mobile Order: 1, Desktop Order: 2) */}
+      <div className="order-1 lg:order-2 flex-1 flex flex-col items-center justify-between lg:justify-center relative py-4 lg:py-0 lg:pt-12">
+        <div className="text-center mb-4 lg:mb-8 z-10 w-full">
+          <h1 className="text-4xl lg:text-6xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] tracking-tighter mb-2 break-words px-4">{wheelConfig.title}</h1>
           <p className="text-yellow-200/90 font-bold uppercase text-xs lg:text-sm tracking-[0.5em] drop-shadow-md">{wheelConfig.subtitle}</p>
         </div>
 
-        <div className="bg-black/40 backdrop-blur-md border border-white/20 px-6 lg:px-10 py-2 lg:py-3 rounded-full flex items-center gap-4 lg:gap-6 shadow-2xl mb-6 lg:mb-10 z-10">
-          <span className="text-[10px] font-black text-white/40 uppercase tracking-widest border-r border-white/10 pr-4 lg:pr-6">{t.adventurer}</span>
+        <div className="bg-black/40 backdrop-blur-md border border-white/20 px-6 lg:px-10 py-2 lg:py-3 rounded-full flex items-center gap-4 lg:gap-6 shadow-2xl mb-6 lg:mb-10 z-10 max-w-[90%] lg:max-w-none">
+          <span className="text-[10px] font-black text-white/40 uppercase tracking-widest border-r border-white/10 pr-4 lg:pr-6 whitespace-nowrap">{t.adventurer}</span>
           <select value={selectedParticipantId} onChange={(e) => setSelectedParticipantId(e.target.value)} disabled={isSpinning}
-            className="bg-transparent text-xl lg:text-2xl font-black text-white focus:outline-none cursor-pointer pr-4">
+            className="bg-transparent text-xl lg:text-2xl font-black text-white focus:outline-none cursor-pointer pr-4 max-w-[150px] lg:max-w-none truncate">
             {participants.map(p => <option key={p.id} value={p.id} className="bg-[#1e3c78]">{p.name} ({p.entries})</option>)}
           </select>
-          <button onClick={handleNextAdventurer} title={t.nextAdventurer} className="text-white/60 hover:text-yellow-400 transition-colors bg-white/10 p-1.5 rounded-full">
+          <button onClick={handleNextAdventurer} title={t.nextAdventurer} className="text-white/60 hover:text-yellow-400 transition-colors bg-white/10 p-1.5 rounded-full shrink-0">
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>
 
         {/* Scaled down container for PC optimization */}
-        <div className="transform scale-90 lg:scale-[0.80] xl:scale-[0.85] transition-transform">
+        <div className="transform scale-90 lg:scale-[0.80] xl:scale-[0.85] transition-transform flex-1 flex items-center justify-center">
            <Wheel prizes={prizes} config={wheelConfig} isSpinning={isSpinning} onSpinEnd={handleSpinEnd} />
         </div>
 
         <button onClick={startSpin} disabled={isSpinning || !currentParticipant || currentParticipant.entries <= 0 || activePrizes.length === 0}
-          className={`mt-6 lg:mt-8 px-20 lg:px-28 py-5 lg:py-7 rounded-3xl text-2xl lg:text-3xl font-black transition-all transform shadow-2xl active:scale-95 border-b-8 border-black/40 z-10 ${isSpinning || !currentParticipant || currentParticipant.entries <= 0 || activePrizes.length === 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed shadow-none border-none' : 'bg-[#FFD54F] text-[#5D4037] hover:bg-yellow-400 hover:-translate-y-2'}`}>
+          className={`mt-6 lg:mt-8 px-12 lg:px-28 py-5 lg:py-7 rounded-3xl text-2xl lg:text-3xl font-black transition-all transform shadow-2xl active:scale-95 border-b-8 border-black/40 z-10 w-4/5 lg:w-auto ${isSpinning || !currentParticipant || currentParticipant.entries <= 0 || activePrizes.length === 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed shadow-none border-none' : 'bg-[#FFD54F] text-[#5D4037] hover:bg-yellow-400 hover:-translate-y-2'}`}>
           {isSpinning ? t.spinning : t.draw}
         </button>
       </div>
 
-      {/* History Log */}
-      <div className="w-full lg:w-[320px] maple-window flex flex-col shrink-0 h-[300px] lg:h-full">
+      {/* History Log (Mobile Order: 3, Desktop Order: 3) */}
+      <div className="order-3 w-full lg:w-[320px] maple-window flex flex-col shrink-0 h-[400px] lg:h-full">
         <div className="maple-header px-4 py-3 flex items-center justify-between">
            <div className="flex items-center gap-2">
             <MessageSquare className="w-4 h-4" />
