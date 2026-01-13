@@ -351,9 +351,9 @@ const App: React.FC = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 {prizes.map(prize => (
-                  <div key={prize.id} className={`bg-white/10 border p-4 rounded-xl flex flex-col gap-4 transition-all hover:bg-white/15 ${prize.enabled ? 'border-white/30' : 'border-white/5 opacity-40 grayscale'} ${prize.isGrandPrize ? 'ring-2 ring-yellow-400 bg-yellow-400/5' : ''}`}>
-                    <div className="flex items-center gap-4">
-                      <button onClick={() => setPrizes(prizes.map(p => p.id === prize.id ? {...p, enabled: !p.enabled} : p))} className="text-yellow-300">
+                  <div key={prize.id} className={`bg-white/10 border p-3 lg:p-4 rounded-xl flex flex-col gap-3 lg:gap-4 transition-all hover:bg-white/15 ${prize.enabled ? 'border-white/30' : 'border-white/5 opacity-40 grayscale'} ${prize.isGrandPrize ? 'ring-2 ring-yellow-400 bg-yellow-400/5' : ''}`}>
+                    <div className="flex items-center gap-3 lg:gap-4">
+                      <button onClick={() => setPrizes(prizes.map(p => p.id === prize.id ? {...p, enabled: !p.enabled} : p))} className="text-yellow-300 shrink-0">
                         {prize.enabled ? <Shield className="w-6 h-6" /> : <PlayCircle className="w-6 h-6 opacity-30" />}
                       </button>
                       <div className="flex flex-col gap-2 shrink-0">
@@ -364,15 +364,15 @@ const App: React.FC = () => {
                       </div>
                       <div className="flex-1 space-y-2 min-w-0">
                         <div className="flex items-center gap-2">
-                          <input type="text" value={prize.label} onChange={e => setPrizes(prizes.map(p => p.id === prize.id ? {...p, label: e.target.value} : p))} className="flex-1 bg-transparent text-sm font-black text-white outline-none placeholder-white/20 truncate" placeholder={t.prizeName} />
+                          <input type="text" value={prize.label} onChange={e => setPrizes(prizes.map(p => p.id === prize.id ? {...p, label: e.target.value} : p))} className="flex-1 bg-transparent text-sm font-black text-white outline-none placeholder-white/20 truncate min-w-0" placeholder={t.prizeName} />
                           <button 
                             onClick={() => setPrizes(prizes.map(p => p.id === prize.id ? {...p, isGrandPrize: !p.isGrandPrize} : p))}
-                            className={`p-1 rounded transition-colors ${prize.isGrandPrize ? 'text-yellow-400 bg-yellow-400/20' : 'text-white/20 hover:text-white/40'}`}
+                            className={`p-1 rounded transition-colors shrink-0 ${prize.isGrandPrize ? 'text-yellow-400 bg-yellow-400/20' : 'text-white/20 hover:text-white/40'}`}
                             title={t.grandPrize}
                           >
                             <Sparkles className="w-4 h-4" />
                           </button>
-                          <button onClick={() => setPrizes(prizes.filter(p => p.id !== prize.id))} className="text-red-400/70 hover:text-red-400"><Trash2 className="w-4 h-4" /></button>
+                          <button onClick={() => setPrizes(prizes.filter(p => p.id !== prize.id))} className="text-red-400/70 hover:text-red-400 shrink-0"><Trash2 className="w-4 h-4" /></button>
                         </div>
                         {/* Grid layout for emojis - Mobile 5 cols (3 rows), Desktop 7 cols (2 rows) */}
                         <div className="grid grid-cols-5 lg:grid-cols-7 gap-1">
@@ -511,7 +511,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Main Wheel Area (Mobile Order: 1, Desktop Order: 2) */}
-      <div className="order-1 lg:order-2 flex-1 flex flex-col items-center justify-between relative py-6 lg:py-2 lg:h-full max-h-full overflow-hidden w-full">
+      <div className="order-1 lg:order-2 flex-1 flex flex-col items-center justify-center gap-4 lg:justify-between lg:gap-0 relative py-6 lg:py-2 lg:h-full max-h-full overflow-hidden w-full">
         <div className="text-center mb-2 lg:mb-4 z-10 w-full shrink-0">
           <h1 className="text-4xl lg:text-6xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] tracking-tighter mb-2 break-words px-4">{wheelConfig.title}</h1>
           <p className="text-yellow-200/90 font-bold uppercase text-xs lg:text-sm tracking-[0.5em] drop-shadow-md">{wheelConfig.subtitle}</p>
@@ -529,7 +529,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Scaled down container for PC optimization */}
-        <div className="transform scale-[0.55] sm:scale-[0.65] md:scale-[0.75] lg:scale-[0.65] xl:scale-[0.75] 2xl:scale-[0.85] transition-transform flex-1 flex items-center justify-center min-h-0 w-full">
+        <div className="transform scale-[0.55] sm:scale-[0.65] md:scale-[0.75] lg:scale-[0.65] xl:scale-[0.75] 2xl:scale-[0.85] -my-16 lg:my-0 transition-transform flex-1 flex items-center justify-center min-h-0 w-full">
            <Wheel prizes={prizes} config={wheelConfig} isSpinning={isSpinning} onSpinEnd={handleSpinEnd} />
         </div>
 
