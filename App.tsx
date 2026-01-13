@@ -511,7 +511,7 @@ const App: React.FC = () => {
       </div>
 
       {/* Main Wheel Area (Mobile Order: 1, Desktop Order: 2) */}
-      <div className="order-1 lg:order-2 flex-1 flex flex-col items-center justify-between lg:justify-center relative py-4 lg:py-0 lg:pt-12">
+      <div className="order-1 lg:order-2 flex-1 flex flex-col items-center justify-between lg:justify-center relative py-4 lg:py-12">
         <div className="text-center mb-4 lg:mb-8 z-10 w-full">
           <h1 className="text-4xl lg:text-6xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] tracking-tighter mb-2 break-words px-4">{wheelConfig.title}</h1>
           <p className="text-yellow-200/90 font-bold uppercase text-xs lg:text-sm tracking-[0.5em] drop-shadow-md">{wheelConfig.subtitle}</p>
@@ -529,7 +529,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Scaled down container for PC optimization */}
-        <div className="transform scale-90 lg:scale-[0.80] xl:scale-[0.85] transition-transform flex-1 flex items-center justify-center">
+        <div className="transform scale-90 lg:scale-[0.75] xl:scale-[0.8] transition-transform flex-1 flex items-center justify-center">
            <Wheel prizes={prizes} config={wheelConfig} isSpinning={isSpinning} onSpinEnd={handleSpinEnd} />
         </div>
 
