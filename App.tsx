@@ -511,13 +511,13 @@ const App: React.FC = () => {
       </div>
 
       {/* Main Wheel Area (Mobile Order: 1, Desktop Order: 2) */}
-      <div className="order-1 lg:order-2 flex-1 flex flex-col items-center justify-between lg:justify-center relative py-4 lg:py-12">
-        <div className="text-center mb-4 lg:mb-8 z-10 w-full">
+      <div className="order-1 lg:order-2 flex-1 flex flex-col items-center justify-between relative py-6 lg:py-2 lg:h-full max-h-full overflow-hidden w-full">
+        <div className="text-center mb-2 lg:mb-4 z-10 w-full shrink-0">
           <h1 className="text-4xl lg:text-6xl font-black text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] tracking-tighter mb-2 break-words px-4">{wheelConfig.title}</h1>
           <p className="text-yellow-200/90 font-bold uppercase text-xs lg:text-sm tracking-[0.5em] drop-shadow-md">{wheelConfig.subtitle}</p>
         </div>
 
-        <div className="bg-black/40 backdrop-blur-md border border-white/20 px-6 lg:px-10 py-2 lg:py-3 rounded-full flex items-center gap-4 lg:gap-6 shadow-2xl mb-6 lg:mb-10 z-10 max-w-[90%] lg:max-w-none">
+        <div className="bg-black/40 backdrop-blur-md border border-white/20 px-6 lg:px-10 py-2 lg:py-3 rounded-full flex items-center gap-4 lg:gap-6 shadow-2xl mb-2 lg:mb-4 z-10 max-w-[90%] lg:max-w-none shrink-0">
           <span className="text-[10px] font-black text-white/40 uppercase tracking-widest border-r border-white/10 pr-4 lg:pr-6 whitespace-nowrap">{t.adventurer}</span>
           <select value={selectedParticipantId} onChange={(e) => setSelectedParticipantId(e.target.value)} disabled={isSpinning}
             className="bg-transparent text-xl lg:text-2xl font-black text-white focus:outline-none cursor-pointer pr-4 max-w-[150px] lg:max-w-none truncate">
@@ -529,12 +529,12 @@ const App: React.FC = () => {
         </div>
 
         {/* Scaled down container for PC optimization */}
-        <div className="transform scale-90 lg:scale-[0.75] xl:scale-[0.8] transition-transform flex-1 flex items-center justify-center">
+        <div className="transform scale-[0.55] sm:scale-[0.65] md:scale-[0.75] lg:scale-[0.65] xl:scale-[0.75] 2xl:scale-[0.85] transition-transform flex-1 flex items-center justify-center min-h-0 w-full">
            <Wheel prizes={prizes} config={wheelConfig} isSpinning={isSpinning} onSpinEnd={handleSpinEnd} />
         </div>
 
         <button onClick={startSpin} disabled={isSpinning || !currentParticipant || currentParticipant.entries <= 0 || activePrizes.length === 0}
-          className={`mt-6 lg:mt-8 px-12 lg:px-28 py-5 lg:py-7 rounded-3xl text-2xl lg:text-3xl font-black transition-all transform shadow-2xl active:scale-95 border-b-8 border-black/40 z-10 w-4/5 lg:w-auto ${isSpinning || !currentParticipant || currentParticipant.entries <= 0 || activePrizes.length === 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed shadow-none border-none' : 'bg-[#FFD54F] text-[#5D4037] hover:bg-yellow-400 hover:-translate-y-2'}`}>
+          className={`mt-4 lg:mt-6 px-12 lg:px-28 py-5 lg:py-7 rounded-3xl text-2xl lg:text-3xl font-black transition-all transform shadow-2xl active:scale-95 border-b-8 border-black/40 z-10 w-4/5 lg:w-auto shrink-0 ${isSpinning || !currentParticipant || currentParticipant.entries <= 0 || activePrizes.length === 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed shadow-none border-none' : 'bg-[#FFD54F] text-[#5D4037] hover:bg-yellow-400 hover:-translate-y-2'}`}>
           {isSpinning ? t.spinning : t.draw}
         </button>
       </div>
