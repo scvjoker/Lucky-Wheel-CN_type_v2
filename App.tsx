@@ -4,7 +4,7 @@ import {
   Plus, Trash2, RotateCcw, Trophy, Settings, 
   Users, Sword, Shield, MessageSquare, Star, Crown, PlayCircle,
   Gift, RefreshCw, Book, Image as ImageIcon, CheckCircle2, Sparkles,
-  PartyPopper, Globe, Download, UserX, ChevronRight, UserPlus
+  PartyPopper, Globe, Download, UserX, ChevronRight, UserPlus, ArrowLeft
 } from 'lucide-react';
 import { Prize, Participant, WheelConfig, SpinRecord } from './types';
 import { DEFAULT_PRIZES, PRESET_COLORS, COMMON_EMOJIS } from './constants';
@@ -584,11 +584,13 @@ const App: React.FC = () => {
             </div>
             <div className={`text-5xl font-black text-white mb-6 tracking-tighter drop-shadow-lg relative z-10 ${winnerResult.prize.isGrandPrize ? 'animate-pulse' : ''}`}>{winnerResult.prize.label}</div>
             <div className="bg-white/5 border border-white/10 rounded-2xl py-6 mb-8 relative z-10 backdrop-blur-sm"><span className="text-[10px] text-white/40 font-black block mb-2 uppercase tracking-widest">{t.winner}</span><span className="text-5xl font-black text-yellow-400 tracking-widest">{winnerResult.person}</span></div>
-            <div className="grid grid-cols-2 gap-4 relative z-10">
-              <button onClick={() => { setWinnerResult(null); setShowCelebration(false); }} className="bg-white/10 border border-white/20 py-4 rounded-xl font-black text-sm text-white hover:bg-white/20 transition-all uppercase">{t.close}</button>
-              <div className="grid grid-cols-2 gap-2">
-                 <button onClick={() => { setWinnerResult(null); setShowCelebration(false); setTimeout(startSpin, 300); }} className="bg-[#FFD54F] py-4 rounded-xl font-black text-sm text-[#5D4037] shadow-xl hover:bg-yellow-400 transition-all flex items-center justify-center gap-2 uppercase"><RefreshCw className="w-4 h-4" /> {t.retry}</button>
-                 <button onClick={() => { setWinnerResult(null); setShowCelebration(false); handleNextAdventurer(); }} className="bg-white/20 border border-white/20 py-4 rounded-xl font-black text-sm text-white hover:bg-white/30 transition-all flex items-center justify-center gap-2 uppercase"><ChevronRight className="w-4 h-4" /> {t.nextAdventurer}</button>
+            <div className="flex gap-2 relative z-10 h-14 lg:h-16">
+              <button onClick={() => { setWinnerResult(null); setShowCelebration(false); }} className="w-14 lg:w-16 h-full bg-white/10 border border-white/20 rounded-xl flex items-center justify-center text-white hover:bg-white/20 transition-all shrink-0" title={t.close}>
+                <ArrowLeft className="w-6 h-6" />
+              </button>
+              <div className="flex-1 grid grid-cols-2 gap-2 h-full">
+                 <button onClick={() => { setWinnerResult(null); setShowCelebration(false); setTimeout(startSpin, 300); }} className="bg-[#FFD54F] h-full rounded-xl font-black text-xs lg:text-sm text-[#5D4037] shadow-xl hover:bg-yellow-400 transition-all flex items-center justify-center gap-1 lg:gap-2 uppercase"><RefreshCw className="w-3 h-3 lg:w-4 lg:h-4" /> {t.retry}</button>
+                 <button onClick={() => { setWinnerResult(null); setShowCelebration(false); handleNextAdventurer(); }} className="bg-white/20 border border-white/20 h-full rounded-xl font-black text-xs lg:text-sm text-white hover:bg-white/30 transition-all flex items-center justify-center gap-1 lg:gap-2 uppercase"><ChevronRight className="w-3 h-3 lg:w-4 lg:h-4" /> {t.nextAdventurer}</button>
               </div>
             </div>
             <p className="mt-6 text-[10px] text-white/40 font-black italic relative z-10 uppercase">{t.remTickets}: {currentParticipant?.entries}</p>
