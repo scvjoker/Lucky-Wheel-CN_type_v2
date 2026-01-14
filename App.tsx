@@ -4,7 +4,8 @@ import {
   Plus, Trash2, RotateCcw, Trophy, Settings, 
   Users, Sword, Shield, MessageSquare, Star, Crown, PlayCircle,
   Gift, RefreshCw, Book, Image as ImageIcon, CheckCircle2, Sparkles,
-  PartyPopper, Globe, Download, UserX, ChevronRight, UserPlus, ArrowLeft
+  PartyPopper, Globe, Download, UserX, ChevronRight, UserPlus, ArrowLeft,
+  Monitor
 } from 'lucide-react';
 import { Prize, Participant, WheelConfig, SpinRecord } from './types';
 import { DEFAULT_PRIZES, PRESET_COLORS, COMMON_EMOJIS } from './constants';
@@ -36,8 +37,10 @@ const TRANSLATIONS = {
     showProb: '轉盤顯示百分比 (%)',
     bgUpload: '中獎底圖上傳 (Modal)',
     fallingUpload: '特別大獎灑落圖片 (預設🍁)',
+    mainBgUpload: '主畫面背景更換',
     removeBg: '移除底圖',
     removeFalling: '恢復預設🍁',
+    removeMainBg: '恢復預設背景',
     duration: '旋轉秒數',
     rotations: '旋轉圈數',
     bounce: '回彈強度',
@@ -78,8 +81,10 @@ const TRANSLATIONS = {
     showProb: 'Show Prob. on Wheel (%)',
     bgUpload: 'Winner Background (Modal)',
     fallingUpload: 'Celebration Falling Item',
+    mainBgUpload: 'Main Background',
     removeBg: 'Remove Background',
     removeFalling: 'Reset to Maple Leaf',
+    removeMainBg: 'Reset Background',
     duration: 'Duration (s)',
     rotations: 'Rotations',
     bounce: 'Bounce Intensity',
@@ -302,7 +307,18 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen lg:h-screen w-full flex flex-col lg:flex-row overflow-x-hidden lg:overflow-hidden p-4 lg:p-6 gap-4 lg:gap-8 relative bg-gradient-to-br from-blue-900/40 to-black/20">
+    <div 
+      className={`min-h-screen lg:h-screen w-full flex flex-col lg:flex-row overflow-x-hidden lg:overflow-hidden p-4 lg:p-6 gap-4 lg:gap-8 relative ${wheelConfig.customBackgroundImage ? 'bg-black/20' : 'bg-gradient-to-br from-blue-900/40 to-black/20'}`}
+      style={wheelConfig.customBackgroundImage ? { 
+        backgroundImage: `url(${wheelConfig.customBackgroundImage})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      } : undefined}
+    >
+      {/* Dark overlay for custom background to improve text readability */}
+      {wheelConfig.customBackgroundImage && <div className="absolute inset-0 bg-black/40 z-[-1]" />}
+
       {showCelebration && <EnhancedCelebration customImage={wheelConfig.customFallingImage} />}
 
       {/* Language Switcher */}
@@ -407,44 +423,6 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'participants' && (
-            <div className="space-y-4">
-              <div className="bg-[#1e3c78]/50 p-4 rounded-xl border border-white/20 shadow-inner">
-                 <div className="flex justify-between items-center mb-3">
-                   <p className="text-[10px] font-black text-yellow-200 uppercase tracking-widest">{t.invite}</p>
-                   <button onClick={clearAllParticipants} title={t.clearAllUsers} className="text-red-400 hover:text-red-300 hover:bg-red-400/20 p-1.5 rounded-lg transition-colors"><UserX className="w-4 h-4" /></button>
-                 </div>
-                 <textarea value={participantInput} onChange={e => setParticipantInput(e.target.value)} placeholder="..." className="w-full bg-black/30 border border-white/20 rounded-lg p-3 text-xs text-white h-32 focus:ring-1 focus:ring-yellow-400 outline-none resize-none" />
-                 <div className="flex gap-3 mt-3">
-                   <button onClick={handleSingleAdd} className="flex-1 bg-white/10 text-white py-3 rounded-lg font-black text-xs hover:bg-white/20 active:scale-95 transition-transform shadow uppercase flex items-center justify-center gap-2"><UserPlus className="w-4 h-4" /> {t.singleAdd}</button>
-                   <button onClick={() => {
-                     // Updated Logic: Split by newline OR comma
-                     const names = participantInput.split(/[\n,]/).map(n => n.trim()).filter(n => n);
-                     setParticipants([...participants, ...names.map(name => ({ id: Math.random().toString(36).substr(2,9), name, entries: 1 }))]);
-                     setParticipantInput('');
-                   }} className="flex-1 bg-[#FFD54F] text-[#5D4037] py-3 rounded-lg font-black text-xs hover:bg-yellow-400 active:scale-95 transition-transform shadow-lg uppercase">{t.addFriends}</button>
-                 </div>
-              </div>
-              <div className="space-y-2">
-                 {participants.map(p => (
-                   <div key={p.id} className="bg-white/10 border border-white/10 p-4 rounded-xl flex justify-between items-center hover:bg-white/15 transition-all">
-                     <div className="flex items-center gap-3">
-                        <Crown className="w-5 h-5 text-yellow-400" />
-                        <span className="text-sm font-black text-white">{p.name}</span>
-                     </div>
-                     <div className="flex items-center gap-3">
-                       <div className="flex flex-col items-end">
-                         <span className="text-[8px] text-white/40 font-black uppercase">{t.tickets}</span>
-                         <input type="number" value={p.entries} onChange={e => setParticipants(participants.map(pt => pt.id === p.id ? {...pt, entries: parseInt(e.target.value)||0} : pt))} className="w-12 bg-black/40 text-yellow-400 text-center text-xs font-black py-1 rounded border border-white/10" />
-                       </div>
-                       <button onClick={() => setParticipants(participants.filter(pt => pt.id !== p.id))} className="text-red-400/40 hover:text-red-400"><Trash2 className="w-4 h-4" /></button>
-                     </div>
-                   </div>
-                 ))}
-              </div>
-            </div>
-          )}
-
           {activeTab === 'settings' && (
             <div className="space-y-6">
               <div className="space-y-4 bg-white/5 p-4 rounded-xl border border-white/10">
@@ -465,6 +443,17 @@ const App: React.FC = () => {
                      </button>
                    </div>
                 </div>
+
+                {/* Main Background Upload */}
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-yellow-200 uppercase tracking-widest flex items-center gap-2"><Monitor className="w-3 h-3"/> {t.mainBgUpload}</label>
+                  <label className="w-full h-24 border-2 border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-white/50 transition-all bg-black/20 overflow-hidden relative">
+                    {wheelConfig.customBackgroundImage ? <img src={wheelConfig.customBackgroundImage} className="w-full h-full object-cover opacity-80" /> : <span className="text-[10px] font-black text-white/30 uppercase text-center px-4">Upload Main Background</span>}
+                    <input type="file" hidden accept="image/*" onChange={(e) => handleFileUpload(e, (b) => setWheelConfig({...wheelConfig, customBackgroundImage: b}))} />
+                  </label>
+                  {wheelConfig.customBackgroundImage && <button onClick={() => setWheelConfig({...wheelConfig, customBackgroundImage: undefined})} className="w-full py-1 text-[8px] font-black text-red-400/50 uppercase hover:text-red-400">{t.removeMainBg}</button>}
+                </div>
+
                 <div className="space-y-3">
                   <label className="text-[10px] font-black text-yellow-200 uppercase tracking-widest flex items-center gap-2"><ImageIcon className="w-3 h-3"/> {t.bgUpload}</label>
                   <label className="w-full h-24 border-2 border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-white/50 transition-all bg-black/20 overflow-hidden relative">

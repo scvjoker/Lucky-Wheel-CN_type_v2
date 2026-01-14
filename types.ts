@@ -34,4 +34,5 @@ export interface WheelConfig {
   showProbabilityOnWheel: boolean;
   winnerEffect?: string;
   customFallingImage?: string; // 客製化灑落圖案 (如取代楓葉)
+  customBackgroundImage?: string; // 客製化背景圖片
 }
